@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Modal preview Mensaje -->
+    <div th:fragment="addNewModal" class="modal fade" id="addNewModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Nueva operación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/nuevaOperacion}" th:object="${operacion}" method="post">
+                        <div class="form-group">
+                                <label class="col-form-label" th:text="'Referencia'"></label>
+                                <input type="text" class="form-control" id="referencia" name="referencia"></input>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-form-label" th:text="'Fecha Valor'"></label>
+                                <input type="text" class="form-control" id="fechaValor" name="fecha_valor"></input>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-form-label" th:text="'Moneda'"></label>
+                                <select class="form-control selectpicker" id="divisas" name="moneda"></select>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Monto'"></label>
+                            <input type="text" class="form-control" id="monto" name="monto"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Contrato Cliente'"></label>
+                            <input type="text" class="form-control" id="contratoCliente" name="contrato_cliente"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Nombre Cliente'"></label>
+                            <input type="text" class="form-control" id="nombreCliente" name="nombre_cliente"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Direccion Cliente'"></label>
+                            <input type="text" class="form-control" id="direccionCliente" name="direccion_cliente"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Corresponsal'"></label>
+                            <select class="form-control selectpicker" id="corresponsales" name="corresponsal">
+                            </select>
+                        </div>
+                        <div class="form-gorup">
+                            <label class="col-form-label" th:text="'Cta Banco Beneficiario'"></label>
+                            <input type="text" class="form-control" id="ctaBancoBeneficiario" name="cta_banco_bnf"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label " th:text="'Nombre Banco Beneficiario'"></label>
+                            <input type="text" class="form-control" id="nomBancoBeneficiario" name="nombre_banco_bnf"></input>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label" th:text="'Cuenta Beneficiario'"></label>
+                            <input type="text" class="form-control" id="ctaBeneficiario" name="cta_beneficiario"></input>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary" id="guardarOperacion">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

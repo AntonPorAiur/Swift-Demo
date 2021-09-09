@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<meta name="_csrf" data-th-content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" data-th-content="${_csrf.headerName}" />
+<body>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container py-4">
+        <div class="card bg-light">
+            <div class="card-header" th:text="${titulo}"></div>
+            <div class="card-body">
+
+                <h4 class="card-title">
+                    <a class="btn btn-light btn-xs" th:href="@{'/listar'}" th:text="volver"></a>
+                </h4>
+
+                <form th:action="@{/formOperacion}" method="post">
+                
+                    <div>
+                        <label th:text="'Referencia'"></label>
+                        <input type="text" th:field="*{referencia}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Fecha Valor'"></label>
+                        <input type="text" th:field="*{fecha_valor}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Moneda'"></label>
+                        <select class="form-control selectpicker" name="moneda.id" id="moneda.id">
+                            <option value="">Ninguna selección</option>
+                            <option th:each="divisa : ${divisas}"
+                                    th:value="${divisa.id}"
+                                    th:text="${divisa.iso}"
+                                    th:selected="${divisa.iso.equals(operacion.moneda.iso)}">
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label th:text="'Monto'"></label>
+                        <input type="text" th:field="*{monto}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Contrato Cliente'"></label>
+                        <input type="text" th:field="*{contrato_cliente}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Nombre Cliente'"></label>
+                        <input type="text" th:field="*{nombre_cliente}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Direccion Cliente '"></label>
+                        <input type="text" th:field="*{direccion_cliente}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Corresponsal'"></label>
+                        <select class="form-control selectpicker"name="corresponsal.id" id="corresponsal.id">
+                            <option value="">Ninguna selección</option>
+                            <option th:each="nostro : ${corresponsales}"
+                                    th:value="${nostro.id}"
+                                    th:text="${nostro.bic}"
+                                    th:selected="${nostro.cuenta.equals(operacion.corresponsal.cuenta)}">
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label th:text="'Cta Banco Beneficiario'"></label>
+                        <input type="text" th:field="*{cta_banco_bnf}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Nombre Banco Beneficiario'"></label>
+                        <input type="text" th:field="*{nombre_banco_bnf}"></input>
+                    </div>
+                    <div>
+                        <label th:text="'Cuenta Beneficiario'"></label>
+                        <input type="text" th:field="*{cta_beneficiario}"></input>
+                    </div>
+                    <input type="submit" value="Guardar" class="btn btn-primary"/>
+                    <input type="hidden" th:field="*{id}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!Doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+    <style>
+        /* Bootstrap 4 text input with search icon */
+
+        .has-search .form-control {
+            padding-left: 2.375rem;
+        }
+
+        .has-search .form-control-feedback {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            width: 2.375rem;
+            height: 2.375rem;
+            line-height: 2.375rem;
+            text-align: center;
+            pointer-events: none;
+            color: #aaa;
+        }
+
+    </style>
+
+    <header th:replace="layout/layout :: header"></header>
+
+    <div class="container-lg py-4">
+        <h4 th:text="${titulo}"></h4>
+        <div class="table-wrapper">
+            <div class="table-tittle">
+                <form>
+                    <div class="form-row">
+                        <div class="col-sm-3 my-1">
+                            <label class="sr-only" for="inicio">Fecha Inicio</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" id="fechaIniBtn" class="input-group-text" disabled>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <input type="text" class="form-control" id="Inicio" placeholder="Fecha inicio">
+                            </div>
+                        </div>
+                        <div class="col-sm-3 my-1">
+                            <label class="sr-only" for="Fin">Fecha Fin</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="Fin" placeholder="Fecha Fin">
+                                <div class="input-group-prepend">
+                                    <button type="button" id="fechaFinBtn" class="input-group-text" disabled>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 my-1">
+                            <div class="form-group has-search">
+                                <span class="fa fa-search form-control-feedback"></span>
+                                <input id="tstSearch" type="text" class="form-control" placeholder="Corresponsal, contrato o referencia" name="keyword">
+                            </div>
+                        </div>
+                        <div class="col-sm-2 my-1">
+<!--                            <button id="paramSearchBtn" type="button" class="btn btn-md btn-primary mr-2">Filtrar</button>-->
+                            <a class="btn btn-primary btn-xs" th:href="@{${page.url}(keyword=${page.keyword})}" th:text="Filtrar"></a>
+                        </div>
+                    </div> <!-- Closign Form Row -->                
+                    <div class="form-row">
+                        <div class="my-1">
+                            <button id="addNewBtn" type="button" class="btn btn-md btn-success ml-1 mr-2" data-toggle="modal" 
+                            data-target="#addNewModal">
+                                <i class="fa fa-plus-circle mr-2" aria-hidden="true"></i>Nueva</button>
+                        </div>
+                        <div class="my-1">
+                            <button id="submit-message" type="button" class="btn btn-md btn-warning" data-toggle="modal" 
+                            data-target="#messageModal">
+                                <i class="fa fa-file" aria-hidden="true"></i></button>
+                        </div>
+                    </div> <!-- Closign Form Row -->       
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table id="lstOperaciones" class="table table-sm table-bordered table-striped table-hover my-2">
+                    <thead class="thead-dark">
+                        <tr>
+                            <td></td>
+                            <th>Referencia</th>
+                            <th>Fecha Valor</th>
+                            <th>Divisa</th>
+                            <th>Monto</th>
+                            <th>Contrato Cliente</th>
+                            <th>Nombre Cliente</th>
+                            <th>Corresponsal</th>
+                            <th>Cta Banco Beneficiario</th>
+                            <th>Banco Beneficiario</th>
+                            <th>Cta Beneficiario</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="operacion : ${operaciones}">
+                            <td><input type="checkbox" name="ops" th:value="${operacion.id}"></td>
+                            <td th:text="${operacion.referencia}"></td>
+                            <td th:text="${operacion.fecha_valor}"></td>
+                            <td th:text="${operacion.moneda.iso}"></td>
+                            <td th:text="${operacion.monto}"></td>
+                            <td th:text="${operacion.contrato_cliente}"></td>
+                            <td th:text="${operacion.nombre_cliente}"></td>
+                            <td th:text="${operacion.corresponsal.bic}"></td>
+                            <td th:text="${operacion.cta_banco_bnf}"></td>
+                            <td th:text="${operacion.nombre_banco_bnf}"></td>
+                            <td th:text="${operacion.cta_beneficiario}"></td>
+                            <td><a class="btn btn-primary btn-xs" th:href="@{/formOperacion/} + ${operacion.id}" th:text="Editar"></a></td>
+                            <td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${operacion.id}" th:text="Eliminar"
+                                    onclick="return confirm('¿Seguro deseas eliminar?')"></a></td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
+            <nav th:replace="paginator-nav :: paginator"></nav>
+        </div>
+    </div>
+
+    <div th:replace="modal/modalForm :: addNewModal"></div>
+
+    <div th:replace="modal/previewMessage :: previewMessage"></div>
+
+    <footer th:replace="layout/layout :: footer"></footer>
+
+    <script>
+        // Date Time Picker Js
+        jQuery.datetimepicker.setDateFormatter('moment')
+        $('#Inicio').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            weeks: true
+        });
+
+       $('#Fin').datetimepicker({
+           timepicker: false,
+           datepicker: true,
+           format: 'Y-m-d',
+           weeks: true
+       }); 
+
+    </script>
+</body>
+</html>
